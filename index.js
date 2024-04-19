@@ -21,6 +21,6 @@ mongoose.connect(process.env.DB_PATH)
     });   
     
 })
-.catch(()=>{
-    console.log('Db connection fail');
+.catch((error)=>{
+    console.log(`Db connection fail due to ${error.message}`);
 });
