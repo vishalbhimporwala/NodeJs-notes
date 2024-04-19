@@ -3,6 +3,8 @@ const user = require("../../models/user.model");
 const ApiError = require("../../utilitys/apiError");
 const ApiResponse = require("../../utilitys/apiResponse");
 const generateJwtToken = require("../../utilitys/jwt");
+const bcrypt = require('bcryptjs');
+
 
 class UserController{
 
@@ -34,7 +36,7 @@ class UserController{
                     const apiError = new ApiError(error.code,message);
                     const response = new ApiResponse(false,null,apiError);
                     console.log('create user error : '+JSON.stringify(error));
-                    return res.status(400).json(response);               
+                    return res.status(400).json(response);
                 }else{
                     const message =  error.message;
                     const apiError = new ApiError(10,message);
@@ -103,6 +105,50 @@ class UserController{
                 console.log('create user error : '+JSON.stringify(error));
                 return res.status(400).json(response);    
             }               
+        }
+    }
+
+    async loginUser(req,res){
+        try {
+            const {userName,email,password} = req.body;
+            console.log(`requested body data userName : ${userName} email : ${email} and password : ${password}`);
+            if((!userName && !email) || !password ){
+                const apiError = new ApiError(0,"Username or email or password is missing");
+                return res.status(400).json(new ApiResponse(false,"Login fail",apiError));
+            }
+
+            let existUser =await user.findOne({
+                $or:[
+                    {userName : userName},
+                    {email : email}
+                ]
+            });
+            console.log(`user from db  ${existUser}`);        
+
+            if(!existUser){
+                const apiError = new ApiError(1,"No user with this email or username");
+                return res.status(400).json(new ApiResponse(false,"Login fail",apiError));
+            }
+            const isPasswordValid = await bcrypt.compare(password,existUser.password);
+            if(!isPasswordValid){
+                const apiError = new ApiError(2,"Password is incorrect.");
+                return res.status(400).json(new ApiResponse(false,"Login fail",apiError));
+            }else
+            {
+                let shareUser = existUser.toJSON();
+                let accessToken = generateJwtToken(existUser);
+                res.setHeader('accessToken',accessToken);
+                const response = new ApiResponse(true,'User login successfully',shareUser);
+                console.log('login userresponse : '+JSON.stringify(response));
+                return res.status(200).json(response);  
+            }
+        } catch (error) {
+            console.log('error  ======='+error);
+            const message =  error.message;
+            const apiError = new ApiError(0,message);
+            const response = new ApiResponse(false,null,apiError);
+            console.log('login user error : '+JSON.stringify(error));
+            return res.status(400).json(response);           
         }
     }
 }
