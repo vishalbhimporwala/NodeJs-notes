@@ -1,5 +1,5 @@
 const { MongoServerError } = require("mongodb");
-const user = require("../../models/user.model");
+const user = require("../../models/users/user.model");
 const ApiError = require("../../utilitys/apiError");
 const ApiResponse = require("../../utilitys/apiResponse");
 const generateJwtToken = require("../../utilitys/jwt");
