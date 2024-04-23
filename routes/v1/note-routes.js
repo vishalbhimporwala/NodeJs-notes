@@ -7,5 +7,6 @@ const noteController = new NoteController();
 noteRouter .post("/create",noteController.createNote);
 noteRouter .get("/fetch",noteController.fetchAllNotes);
 noteRouter .post("/update",noteController.updateNote);
+noteRouter .delete("/delete/:id",noteController.deleteNote);
 
-module.exports = noteRouter ;
+module.exports = noteRouter;

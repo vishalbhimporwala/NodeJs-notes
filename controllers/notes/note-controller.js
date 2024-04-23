@@ -112,6 +112,43 @@ class NoteController{
             return res.status(400).json(response);
         }
     }
+    async deleteNote(req,res){
+        try {
+            const accessToken = req.headers["authorization"];
+            if (!accessToken) {
+                const apiError = new ApiError(0,"Missing accessToken");
+                const response = new ApiResponse(false,null,apiError);
+                return res.status(401).json(response);
+            }
+
+            const token = accessToken.split(' ')[1]; // Assuming 'Bearer <token>' format
+              if (!token) {
+                const apiError = new ApiError(1,"Invalid authorization header format");
+                const response = new ApiResponse(false,null,apiError);
+                return res.status(401).json(response);
+            }
+            let payload = getPayloadFromToken(token)
+            console.log("payload "+JSON.stringify(payload));
+            const userId = payload['_id'];
+            console.log("userId from accesToken : "+userId);
+            const _id = req.params.id;
+            const responseNote = await NoteSchema.findByIdAndDelete(_id);
+            if(!responseNote){
+                const apiError = new ApiError(0,"Note not found");
+                const response = new ApiResponse(false,"",null,apiError);
+                return res.status(400).json(response);  
+            }else{
+                const response = new ApiResponse(true,"Notes deleted successfully",responseNote);
+                return res.status(200).json(response);
+            }            
+        } catch (error) {
+            const message =  error.message;
+            const apiError = new ApiError(10,message);
+            const response = new ApiResponse(false,null,apiError);
+            console.log('Notes fetch error : '+JSON.stringify(error));
+            return res.status(400).json(response);
+        }
+    }
 
 }
 
