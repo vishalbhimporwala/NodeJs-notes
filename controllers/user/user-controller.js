@@ -2,7 +2,7 @@ const { MongoServerError } = require("mongodb");
 const user = require("../../models/users/user.model");
 const ApiError = require("../../utilitys/apiError");
 const ApiResponse = require("../../utilitys/apiResponse");
-const generateJwtToken = require("../../utilitys/jwt");
+const {generateJwtToken} = require("../../utilitys/jwt");
 const bcrypt = require('bcryptjs');
 
 
@@ -13,7 +13,6 @@ class UserController{
             const userData = await user.create(req.body);
             const shareUser = userData.toJSON();
             console.log('create user : '+JSON.stringify(userData));
-            const apiError = new ApiError(0,"no error");
             const response = new ApiResponse(true,"User register successfully",shareUser);
             console.log('create userresponse : '+JSON.stringify(response));
             const accessToken = generateJwtToken(userData);

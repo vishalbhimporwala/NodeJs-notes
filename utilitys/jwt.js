@@ -14,4 +14,9 @@ function generateJwtToken(user){
     return jwt.sign(payload,process.env.JWT_SECRET,option);
 }
 
-module.exports = generateJwtToken;
+function getPayloadFromToken(accessToken){
+  const payload = jwt.verify(accessToken,process.env.JWT_SECRET);
+  return payload;
+}
+
+module.exports = {generateJwtToken,getPayloadFromToken};

@@ -51,7 +51,7 @@ UserSchema.pre('save', async function(next) {
     // Generate a salt (random bytes for added security)
     const salt = await bcrypt.genSalt(10); // Adjust cost factor as needed (higher = slower, more secure)
   
-    // Hash the password with the salt
+    // Hash the password with the salt  
     this.password = await bcrypt.hash(this.password, salt);
   
     // Clear the plain text password (optional for security)
