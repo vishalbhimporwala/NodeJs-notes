@@ -10,7 +10,7 @@ app.use('/api/v1',v1);
 const port = process.env.PORT || 3025
 
 app.get('/',(req,res)=>{
-    res.send(`Server is running on port ${port}3025 server`);
+    res.send(`Server is running on port ${port} server`);
 });   
 
 mongoose.connect(process.env.DB_PATH)
