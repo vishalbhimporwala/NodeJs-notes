@@ -3,6 +3,16 @@ const express = require('express')
 const mongoose = require('mongoose');
 const v1 = require('./routes/v1/index');
 const app = express()
+const cors = require('cors');
+
+
+// ✅ Apply CORS Middleware
+app.use(cors({
+    origin: '*',  // Allows requests from any origin (use specific domains in production)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization','accessToken'],
+    exposedHeaders: ["accessToken"] // <-- Expose accessToken so the browser can read it
+}));
 
 app.use(express.json());
 app.use('/api/v1',v1);
