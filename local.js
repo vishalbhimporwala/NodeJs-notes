@@ -34,3 +34,28 @@ mongoose.connect(process.env.DB_PATH)
 .catch((error)=>{
     console.log(`Db connection fail due to ${error.message}`);
 });
+
+// Connect to DB only once at cold start
+// let isConnected = false;
+
+// async function connectToDB() {
+//     console.log('Connecting to Db'+isConnected);
+//     if (isConnected) return;
+//     await mongoose.connect(process.env.DB_PATH);
+//     isConnected = true;
+// }
+
+// // Export the handler for Vercel
+// module.exports = async (req, res) => {
+//     console.log('Connecting to Db');
+//     await connectToDB();
+//         app.listen(port,()=>{
+//         console.log('Server is running  on port '+port);
+//     }); 
+//     console.log('Connected to Db');
+//     return app(req, res); // Pass request to Express
+// };
+
+//  app.listen(port,()=>{
+//         console.log('Server is running  on port '+port);
+//     }); 
