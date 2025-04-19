@@ -34,7 +34,7 @@ const UserSchema = mongoose.Schema(
           }     
     },
     {
-        TimeRanges:true
+        timestamps: true  // Automatically adds 'createdAt' and 'updatedAt' fields
     }
 );
 

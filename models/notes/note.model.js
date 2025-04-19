@@ -18,7 +18,7 @@ const noteSchema = mongoose.Schema(
             required:true
         }
     },{
-        TimeRanges: true
+        timestamps: true  // Automatically adds 'createdAt' and 'updatedAt' fields
     }
 );
 
