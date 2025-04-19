@@ -60,7 +60,7 @@ class NoteController{
             const userId = payload['_id'];
             console.log("userId from accesToken : "+userId);
             const allNotes = await NoteSchema.find({userId:`${userId}`})
-            const response = new ApiResponse(true,"Notes fetch successfully",allNotes);
+            const response = new ApiResponse(true,"Notes fetch successfully",allNotes.reverse());
             return res.status(200).json(response);
         } catch (error) {
             const message =  error.message;
